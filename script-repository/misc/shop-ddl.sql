@@ -1,4 +1,4 @@
-create table supplier
+create table if not exists supplier
 (
     id serial
         constraint supplier_pk
@@ -11,7 +11,7 @@ create table supplier
 
 alter table supplier owner to postgres;
 
-create table shop
+create table if not exists shop
 (
     id serial
         constraint shop_pk
@@ -23,7 +23,7 @@ create table shop
 
 alter table shop owner to postgres;
 
-create table shop_department
+create table if not exists shop_department
 (
     id serial
         constraint shop_department_pk
@@ -36,7 +36,7 @@ create table shop_department
 
 alter table shop_department owner to postgres;
 
-create table department_worker
+create table if not exists department_worker
 (
     id serial
         constraint department_worker_pk
@@ -52,7 +52,7 @@ create table department_worker
 
 alter table department_worker owner to postgres;
 
-create table department_product
+create table if not exists department_product
 (
     id serial
         constraint department_product_pk
@@ -68,7 +68,7 @@ create table department_product
 
 alter table department_product owner to postgres;
 
-create table product_discount
+create table if not exists product_discount
 (
     id serial
         constraint product_discount_pk
@@ -81,7 +81,7 @@ create table product_discount
 
 alter table product_discount owner to postgres;
 
-create table supplier_shop_map
+create table if not exists supplier_shop_map
 (
     id serial
         constraint supplier_shop_map_pk
@@ -92,7 +92,7 @@ create table supplier_shop_map
 
 alter table supplier_shop_map owner to postgres;
 
-create table supplier_main_office
+create table if not exists supplier_main_office
 (
     location varchar(64) not null
         constraint supplier_main_office_pk
