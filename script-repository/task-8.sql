@@ -155,3 +155,60 @@ FROM (
 ) max_dur_tbl ON total_durations.total_duration = max_dur_tbl.max_col;
 
 -- Task 6
+
+SELECT id, name
+FROM crew_members
+WHERE position = 'pilot';
+-- Inspect and refactor
+
+-- Get all flights for all pilots
+SELECT id AS pilot_id, name AS pilot_name, flight_id
+FROM (
+         SELECT id, name
+         FROM crew_members
+         WHERE position = 'pilot'
+     ) AS pilots
+         JOIN flight_crew_members
+              ON flight_crew_members.crew_member_id = pilots.id
+ORDER BY pilot_id;
+
+-- Get visited airport ids
+SELECT pilot_id, pilot_name, departure_airport_id, arrival_airport_id
+FROM
+    (
+        SELECT id AS pilot_id, name AS pilot_name, flight_id
+        FROM (
+                 SELECT id, name
+                 FROM crew_members
+                 WHERE position = 'pilot'
+             ) AS pilots
+                 JOIN flight_crew_members
+                      ON flight_crew_members.crew_member_id = pilots.id
+    ) AS all_flights
+        JOIN flights
+             ON all_flights.flight_id = flights.id
+ORDER BY pilot_id;
+
+
+SELECT pilot_id, pilot_name, airports.location_city AS visited_location
+FROM
+    (
+        SELECT pilot_id, pilot_name, departure_airport_id, arrival_airport_id
+        FROM
+            (
+                SELECT id AS pilot_id, name AS pilot_name, flight_id
+                FROM (
+                         SELECT id, name
+                         FROM crew_members
+                         WHERE position = 'pilot'
+                     ) AS pilots
+                         JOIN flight_crew_members
+                              ON flight_crew_members.crew_member_id = pilots.id
+            ) AS all_flights
+                JOIN flights
+                     ON all_flights.flight_id = flights.id
+    ) AS all_airport_ids
+        JOIN airports
+             ON all_airport_ids.departure_airport_id = airports.id
+                 OR all_airport_ids.arrival_airport_id = airports.id
+ORDER BY all_airport_ids.pilot_id;
