@@ -6,7 +6,9 @@ FROM flights
          INNER JOIN (
     SELECT MAX(duration) max_duration_column
     FROM flights
-) max_duration_table ON duration = max_duration_table.max_duration_column;
+) max_duration_table
+             ON duration = max_duration_table.max_duration_column;
+
 
 -- Task 4
 
@@ -26,7 +28,8 @@ WITH all_flights AS (
      ),
      -- Get the number of flights for each airport
      all_flights_count_for_specified_day AS (
-         SELECT airport_id, count(*) AS flights_count
+         SELECT airport_id,
+                COUNT(*) AS flights_count
          FROM all_flights_for_specified_day
          GROUP BY airport_id
      )
@@ -34,6 +37,7 @@ WITH all_flights AS (
 SELECT *
 FROM all_flights_count_for_specified_day
 ORDER BY airport_id;
+
 
 -- Task 5
 
@@ -122,7 +126,8 @@ WITH pilots AS (
      ),
      -- Aggregate pilot locations into one row
      pilot_id_routes AS (
-         SELECT pilot_id, STRING_AGG(visited_location, ' -> ') route
+         SELECT pilot_id,
+                STRING_AGG(visited_location, ' -> ') route
          FROM all_visited_locations
          GROUP BY pilot_id
      ),
@@ -139,11 +144,12 @@ SELECT *
 FROM pilot_routes
 ORDER BY pilot_id;
 
--- By the way
--- Where is the mistake??
+
+-- By the way.
+-- Where is the mistake?
 SELECT *
 FROM (
-         SELECT passenger_id, sum(duration) total_duration
+         SELECT passenger_id, SUM(duration) total_duration
          FROM (
                   SELECT passenger_id, flights.duration
                   FROM (
